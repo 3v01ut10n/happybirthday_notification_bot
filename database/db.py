@@ -70,6 +70,18 @@ def select_birthday(active):
             bot.send_message(adm_id, "При получении списка возникла ошибка")
 
 
+def select_active_birthdays():
+    """Активные дни рождения в сыром виде из базы."""
+    try:
+        cursor = connection.cursor()
+        sql = f"SELECT * FROM `happy_birthdays` WHERE active = '1';"
+        cursor.execute(sql)
+        birthdays = cursor.fetchall()
+        return birthdays
+    except:
+        bot.send_message(adm_id, "При получении списка возникла ошибка")
+
+
 def manage_notify_birthday(id, mode):
     """
     Отключить/включить уведомления по дню рождения для выбранного человека.
