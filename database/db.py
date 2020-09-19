@@ -1,6 +1,7 @@
 import pymysql.cursors
 
 from main import bot, adm_id
+from core import date_convert_from_mysql_format
 import config
 
 
@@ -32,7 +33,7 @@ def select_all_birthday_in_db():
         cursor.execute(sql)
         birthdays = cursor.fetchall()
         for birthday in birthdays:
-            data += f"{birthday['name']} - {birthday['date']}\n"
+            data += f"{birthday['name']} - {date_convert_from_mysql_format(birthday['date'])}\n"
         return data
     except:
         bot.send_message(adm_id, "При получении списка возникла ошибка.")

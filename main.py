@@ -1,25 +1,14 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+from core import *
 import database.db as db
-
 import config
 
 
 bot = telebot.TeleBot(config.token)
 group_id = config.group_id
 adm_id = config.adm_id
-
-
-def check_admin_rights(message):
-    """Проверка на админские права."""
-    if str(message.from_user.id) == adm_id:
-        return True
-
-
-def date_convert_to_mysql_format(date):
-    day, month, year = date.split(".")
-    return f"{year}-{month}-{day}"
 
 
 def admin_menu_keyboard():
