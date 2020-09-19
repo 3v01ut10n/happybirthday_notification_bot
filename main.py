@@ -15,8 +15,11 @@ def admin_menu_keyboard():
     """Меню админки для управления ботом."""
     menu = """
 Добавить именинника - /add_birthday
+
 Отключить уведомления по имениннику - /disable_birthday
-Посмотреть всех именинников - /show_all_birthday
+Включить уведомления по имениннику - /enable_birthday
+
+Посмотреть всех именинников - /show_all_birthdays
 Отправить тестовое сообщение в группу - /send_test_group_msg
 """
 
@@ -58,14 +61,15 @@ def add_message_processing(message):
 
 @bot.message_handler(commands=["disable_birthday"])
 def disable_birthday(message):
-    """Отключить уведомление по имениннику."""
+    """Отключить уведомления по имениннику."""
     try:
         if check_admin_rights(message):
-            bot.send_message(
-                adm_id,
-                f"Для какого человека отключить уведомления? Введи ID.\n{db.select_active_birthday()}"
-            )
-            bot.register_next_step_handler(message, disable_message_processing)
+            birthdays = db.select_birthday(active=True)
+            if birthdays:
+                bot.send_message(adm_id, f"Для какого человека отключить уведомления? Введи ID.\n{birthdays}")
+                bot.register_next_step_handler(message, disable_message_processing)
+            else:
+                bot.send_message(adm_id, "Сейчас уведомления отключены для всех")
     except Exception as e:
         print(e)
 
@@ -74,18 +78,43 @@ def disable_message_processing(message):
     """Обработка сообщения с информацией об отключении."""
     try:
         id = message.text
-        db.disable_birthday(id)
+        db.manage_notify_birthday(id, mode="disable")
         bot.send_message(adm_id, "Уведомления для этого человека отключены")
     except ValueError:
         bot.send_message(adm_id, "Неверный формат данных. Попробуй снова - /disable_birthday")
 
 
-@bot.message_handler(commands=["show_all_birthday"])
-def show_all_birthday(message):
+@bot.message_handler(commands=["enable_birthday"])
+def enable_birthday(message):
+    """Включить уведомления по имениннику."""
+    try:
+        if check_admin_rights(message):
+            birthdays = db.select_birthday(active=False)
+            if birthdays:
+                bot.send_message(adm_id, f"Для какого человека включить уведомления? Введи ID.\n{birthdays}")
+                bot.register_next_step_handler(message, enable_message_processing)
+            else:
+                bot.send_message(adm_id, "Сейчас уведомления включены для всех")
+    except Exception as e:
+        print(e)
+
+
+def enable_message_processing(message):
+    """Обработка сообщения с информацией о включении."""
+    try:
+        id = message.text
+        db.manage_notify_birthday(id, mode="enable")
+        bot.send_message(adm_id, "Уведомления для этого человека включены")
+    except ValueError:
+        bot.send_message(adm_id, "Неверный формат данных. Попробуй снова - /enable_birthday")
+
+
+@bot.message_handler(commands=["show_all_birthdays"])
+def show_all_birthdays(message):
     """Показать всех именинников."""
     try:
         if check_admin_rights(message):
-            bot.send_message(adm_id, db.select_all_birthday())
+            bot.send_message(adm_id, db.select_all_birthdays())
     except Exception as e:
         print(e)
 
