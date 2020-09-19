@@ -5,6 +5,7 @@ from config import group_id
 
 
 server_time = datetime.datetime.now().strftime("%m-%d")
+db.check_connection()
 active_birthdays = db.select_active_birthdays()
 
 # Поиск именинников.

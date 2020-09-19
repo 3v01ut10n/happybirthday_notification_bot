@@ -22,8 +22,8 @@ def check_connection():
 
 def insert_birthday(name, date, telephone):
     """Добавить день рождения в базу."""
+    check_connection()
     try:
-        check_connection()
         cursor = connection.cursor()
         sql = f"INSERT INTO `happy_birthdays` (id, name, date, telephone, active) " \
               f"VALUES (DEFAULT, '{name}', '{date}', '{telephone}', '1');"
@@ -36,9 +36,9 @@ def insert_birthday(name, date, telephone):
 
 def select_all_birthdays():
     """Получить все дни рождения из базы."""
+    check_connection()
     try:
         data = ""
-        check_connection()
         cursor = connection.cursor()
         sql = f"SELECT * FROM `happy_birthdays`"
         cursor.execute(sql)
@@ -56,10 +56,10 @@ def select_birthday(active):
     Получить все активные/неактивные дни рождения из базы.
     active = True/False
     """
+    check_connection()
     if active:
         try:
             data = ""
-            check_connection()
             cursor = connection.cursor()
             sql = f"SELECT * FROM `happy_birthdays` WHERE active = '1';"
             cursor.execute(sql)
@@ -73,7 +73,6 @@ def select_birthday(active):
     else:
         try:
             data = ""
-            check_connection()
             cursor = connection.cursor()
             sql = f"SELECT * FROM `happy_birthdays` WHERE active = '0';"
             cursor.execute(sql)
@@ -88,8 +87,8 @@ def select_birthday(active):
 
 def select_active_birthdays():
     """Активные дни рождения в сыром виде из базы."""
+    check_connection()
     try:
-        check_connection()
         cursor = connection.cursor()
         sql = f"SELECT * FROM `happy_birthdays` WHERE active = '1';"
         cursor.execute(sql)
@@ -105,9 +104,9 @@ def manage_notify_birthday(id, mode):
     Отключить/включить уведомления по дню рождения для выбранного человека.
     mode = disable/enable
     """
+    check_connection()
     if mode == "disable":
         try:
-            check_connection()
             cursor = connection.cursor()
             sql = f"UPDATE `happy_birthdays` SET active = '0' WHERE id = '{id}';"
             cursor.execute(sql)
@@ -116,7 +115,6 @@ def manage_notify_birthday(id, mode):
             bot.send_message(adm_id, "При отключении возникла ошибка")
     elif mode == "enable":
         try:
-            check_connection()
             cursor = connection.cursor()
             sql = f"UPDATE `happy_birthdays` SET active = '1' WHERE id = '{id}';"
             cursor.execute(sql)
