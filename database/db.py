@@ -16,8 +16,8 @@ def insert_birthday_in_db(name, date, telephone):
     """Добавить день рождения в базу."""
     try:
         cursor = connection.cursor()
-        sql = f"INSERT INTO `happy_birthdays` (id, name, date, telephone) " \
-              f"VALUES (DEFAULT, '{name}', '{date}', '{telephone}');"
+        sql = f"INSERT INTO `happy_birthdays` (id, name, date, telephone, active) " \
+              f"VALUES (DEFAULT, '{name}', '{date}', '{telephone}', '1');"
         cursor.execute(sql)
         connection.commit()
     except:
