@@ -27,6 +27,7 @@ def admin_menu_keyboard():
     menu = """
 Добавить именинника - /add_birthday
 Отключить уведомления по имениннику - /disable_birthday
+Посмотреть всех именинников - /show_all_birthday
 Отправить тестовое сообщение в группу - /send_test_group_msg
 """
 
@@ -45,7 +46,7 @@ def admin_menu(message):
 
 
 @bot.message_handler(commands=["add_birthday"])
-def add_birthday_boy(message):
+def add_birthday(message):
     """Добавление именинника."""
     try:
         if check_admin_rights(message):
@@ -66,13 +67,14 @@ def message_processing(message):
         bot.send_message(adm_id, "Неверный формат данных. Попробуй снова - /add_birthday")
 
 
-"""# События при нажатии на кнопки меню.
-@bot.callback_query_handler(func=lambda call: True)
-def callback_query(call):
-    if call.data == "disable_birthday_boy":
-        bot.send_message(group_id, "Отключить уведомления по имениннику", parse_mode="Markdown")
-    elif call.data == "send_test_group_msg":
-        bot.send_message(group_id, "Тестовое сообщение")"""
+@bot.message_handler(commands=["show_all_birthday"])
+def show_all_birthday(message):
+    """Показать всех именинников."""
+    try:
+        if check_admin_rights(message):
+            bot.send_message(adm_id, db.select_all_birthday_in_db())
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
