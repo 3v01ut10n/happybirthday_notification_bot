@@ -20,7 +20,8 @@ def insert_birthday(name, date, telephone):
               f"VALUES (DEFAULT, '{name}', '{date}', '{telephone}', '1');"
         cursor.execute(sql)
         connection.commit()
-    except:
+    except Exception as e:
+        print(e)
         bot.send_message(adm_id, "При добавлении произошла ошибка")
 
 
@@ -35,7 +36,8 @@ def select_all_birthdays():
         for birthday in birthdays:
             data += f"{birthday['name']} - {date_convert_from_mysql_format(birthday['date'])}\n"
         return data
-    except:
+    except Exception as e:
+        print(e)
         bot.send_message(adm_id, "При получении списка возникла ошибка")
 
 
@@ -54,7 +56,8 @@ def select_birthday(active):
             for birthday in birthdays:
                 data += f"{birthday['id']}. {birthday['name']} - {date_convert_from_mysql_format(birthday['date'])}\n"
             return data
-        except:
+        except Exception as e:
+            print(e)
             bot.send_message(adm_id, "При получении списка возникла ошибка")
     else:
         try:
@@ -66,7 +69,8 @@ def select_birthday(active):
             for birthday in birthdays:
                 data += f"{birthday['id']}. {birthday['name']} - {date_convert_from_mysql_format(birthday['date'])}\n"
             return data
-        except:
+        except Exception as e:
+            print(e)
             bot.send_message(adm_id, "При получении списка возникла ошибка")
 
 
@@ -78,7 +82,8 @@ def select_active_birthdays():
         cursor.execute(sql)
         birthdays = cursor.fetchall()
         return birthdays
-    except:
+    except Exception as e:
+        print(e)
         bot.send_message(adm_id, "При получении списка возникла ошибка")
 
 
@@ -92,12 +97,14 @@ def manage_notify_birthday(id, mode):
             cursor = connection.cursor()
             sql = f"UPDATE `happy_birthdays` SET active = '0' WHERE id = '{id}';"
             cursor.execute(sql)
-        except:
+        except Exception as e:
+            print(e)
             bot.send_message(adm_id, "При отключении возникла ошибка")
     elif mode == "enable":
         try:
             cursor = connection.cursor()
             sql = f"UPDATE `happy_birthdays` SET active = '1' WHERE id = '{id}';"
             cursor.execute(sql)
-        except:
+        except Exception as e:
+            print(e)
             bot.send_message(adm_id, "При включении возникла ошибка")
