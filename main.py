@@ -20,7 +20,6 @@ def admin_menu_keyboard():
 Включить уведомления по имениннику - /enable_birthday
 
 Посмотреть всех именинников - /show_all_birthdays
-Отправить тестовое сообщение в группу - /send_test_group_msg
 """
 
     return menu
