@@ -14,7 +14,7 @@ connection = pymysql.connect(
 
 def ping_connection():
     if not connection.open:
-        connection.ping()
+        connection.ping(reconnect=True)
 
 
 def insert_birthday(name, date, telephone):
