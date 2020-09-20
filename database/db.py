@@ -12,17 +12,14 @@ connection = pymysql.connect(
 )
 
 
-def check_connection():
-    try:
-        if not connection.open:
-            connection.ping(reconnect=True)
-    except Exception as e:
-        print(e)
+def ping_connection():
+    if not connection.open:
+        connection.ping()
 
 
 def insert_birthday(name, date, telephone):
     """Добавить день рождения в базу."""
-    check_connection()
+    ping_connection()
     try:
         cursor = connection.cursor()
         sql = f"INSERT INTO `happy_birthdays` (id, name, date, telephone, active) " \
@@ -36,7 +33,7 @@ def insert_birthday(name, date, telephone):
 
 def select_all_birthdays():
     """Получить все дни рождения из базы."""
-    check_connection()
+    ping_connection()
     try:
         data = ""
         cursor = connection.cursor()
@@ -56,7 +53,7 @@ def select_birthday(active):
     Получить все активные/неактивные дни рождения из базы.
     active = True/False
     """
-    check_connection()
+    ping_connection()
     if active:
         try:
             data = ""
@@ -87,7 +84,7 @@ def select_birthday(active):
 
 def select_active_birthdays():
     """Активные дни рождения в сыром виде из базы."""
-    check_connection()
+    ping_connection()
     try:
         cursor = connection.cursor()
         sql = f"SELECT * FROM `happy_birthdays` WHERE active = '1';"
@@ -104,7 +101,7 @@ def manage_notify_birthday(id, mode):
     Отключить/включить уведомления по дню рождения для выбранного человека.
     mode = disable/enable
     """
-    check_connection()
+    ping_connection()
     if mode == "disable":
         try:
             cursor = connection.cursor()
