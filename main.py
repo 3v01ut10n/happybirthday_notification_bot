@@ -1,5 +1,4 @@
 import telebot
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from core import *
 import database.db as db
@@ -41,7 +40,11 @@ def add_birthday(message):
     """Добавление именинника."""
     try:
         if check_admin_rights(message):
-            bot.send_message(adm_id, 'Отправь данные в формате "Имя, дата, телефон"', parse_mode="Markdown")
+            bot.send_message(
+                adm_id,
+                f'Отправь данные в формате "Имя, дата, телефон, пол".\n'
+                f'Пример - "Иван Иванов, 01.01.1990, 89991234567, M"',
+                parse_mode="Markdown")
             bot.register_next_step_handler(message, add_message_processing)
     except Exception as e:
         print(e)
@@ -50,9 +53,9 @@ def add_birthday(message):
 def add_message_processing(message):
     """Обработка сообщения с информацией о добавлении."""
     try:
-        name, date, telephone = message.text.split(', ')
+        name, date, telephone, gender = message.text.split(', ')
         date = date_convert_to_mysql_format(date)
-        db.insert_birthday(name, date, telephone)
+        db.insert_birthday(name, date, telephone, gender)
         bot.send_message(adm_id, "День рождения успешно добавлен")
     except ValueError:
         bot.send_message(adm_id, "Неверный формат данных. Попробуй снова - /add_birthday")

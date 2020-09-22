@@ -12,13 +12,13 @@ connection = pymysql.connect(
 )
 
 
-def insert_birthday(name, date, telephone):
+def insert_birthday(name, date, telephone, gender):
     """Добавить день рождения в базу."""
     connection.ping()
     try:
         cursor = connection.cursor()
-        sql = f"INSERT INTO `happy_birthdays` (id, name, date, telephone, active) " \
-              f"VALUES (DEFAULT, '{name}', '{date}', '{telephone}', '1');"
+        sql = f"INSERT INTO `happy_birthdays` (id, name, date, telephone, gender, active) " \
+              f"VALUES (DEFAULT, '{name}', '{date}', '{telephone}', '{gender}', '1');"
         cursor.execute(sql)
         connection.commit()
     except Exception as e:

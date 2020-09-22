@@ -4,6 +4,14 @@ from database import db
 from config import group_id
 
 
+def put_gender(gender):
+    """Подставить пол в текст."""
+    if gender == "M":
+        return "Ему"
+    elif gender == "F":
+        return "Ей"
+
+
 db.connection.ping()
 current_date = db.get_current_date()
 active_birthdays = db.select_active_birthdays()
@@ -19,7 +27,7 @@ for person in today_birthday_boys:
     db.bot.send_message(
         group_id,
         f"Сегодня день рождения отмечает {person['name']}!\n"
-        f"Ему исполняется {current_date.year - person['date'].year}.\n"
+        f"{put_gender(person['gender'])} исполняется {current_date.year - person['date'].year}.\n"
         f"Номер телефона: {person['telephone']}"
     )
 
@@ -37,6 +45,6 @@ for person in week_birthday_boys:
     db.bot.send_message(
         group_id,
         f"Через неделю день рождения у {person['name']}!\n"
-        f"Ему исполняется {current_date.year - person['date'].year}.\n"
+        f"{put_gender(person['gender'])} исполняется {current_date.year - person['date'].year}.\n"
         f"Номер телефона: {person['telephone']}"
     )
