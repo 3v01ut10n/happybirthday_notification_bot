@@ -1,8 +1,8 @@
 import pymysql.cursors
 
+import config
 from main import bot, adm_id
 from core import date_convert_from_mysql_format
-import config
 
 
 # Подключение к базе.
@@ -12,14 +12,9 @@ connection = pymysql.connect(
 )
 
 
-def ping_connection():
-    if not connection.open:
-        connection.ping(reconnect=True)
-
-
 def insert_birthday(name, date, telephone):
     """Добавить день рождения в базу."""
-    ping_connection()
+    connection.ping()
     try:
         cursor = connection.cursor()
         sql = f"INSERT INTO `happy_birthdays` (id, name, date, telephone, active) " \
@@ -33,7 +28,7 @@ def insert_birthday(name, date, telephone):
 
 def select_all_birthdays():
     """Получить все дни рождения из базы."""
-    ping_connection()
+    connection.ping()
     try:
         data = ""
         cursor = connection.cursor()
@@ -53,7 +48,7 @@ def select_birthday(active):
     Получить все активные/неактивные дни рождения из базы.
     active = True/False
     """
-    ping_connection()
+    connection.ping()
     if active:
         try:
             data = ""
@@ -84,7 +79,7 @@ def select_birthday(active):
 
 def select_active_birthdays():
     """Активные дни рождения в сыром виде из базы."""
-    ping_connection()
+    connection.ping()
     try:
         cursor = connection.cursor()
         sql = f"SELECT * FROM `happy_birthdays` WHERE active = '1';"
@@ -101,7 +96,7 @@ def manage_notify_birthday(id, mode):
     Отключить/включить уведомления по дню рождения для выбранного человека.
     mode = disable/enable
     """
-    ping_connection()
+    connection.ping()
     if mode == "disable":
         try:
             cursor = connection.cursor()
