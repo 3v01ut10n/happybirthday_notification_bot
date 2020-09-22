@@ -113,3 +113,16 @@ def manage_notify_birthday(id, mode):
         except Exception as e:
             print(e)
             bot.send_message(adm_id, "При включении возникла ошибка")
+
+
+def get_current_date():
+    """Получить текущую дату из базы данных."""
+    connection.ping()
+    try:
+        cursor = connection.cursor()
+        sql = f"SELECT CURRENT_DATE FROM `happy_birthdays`;"
+        cursor.execute(sql)
+        return cursor.fetchone()["CURRENT_DATE"]
+    except Exception as e:
+        print(e)
+        bot.send_message(adm_id, "При получении системной даты возникла ошибка")
