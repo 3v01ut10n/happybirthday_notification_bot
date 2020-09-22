@@ -13,6 +13,7 @@ CREATE TABLE `happy_birthdays` (
   `name` varchar(255) DEFAULT NULL COMMENT 'Name, Surname',
   `date` date DEFAULT NULL COMMENT 'Date of Birthday',
   `telephone` varchar(20) DEFAULT NULL COMMENT 'Telephone number',
+  `gender` varchar(1) NOT NULL DEFAULT 'M' COMMENT 'Male, Female',
   `active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

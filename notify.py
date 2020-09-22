@@ -29,7 +29,6 @@ week_birthday_boys = []
 for person in active_birthdays:
     date_birthday_in_current_year = date(current_date.year, person["date"].month, person["date"].day)
     delta = (date_birthday_in_current_year - current_date).days
-    print(delta)
     if delta == 7:
         week_birthday_boys.append(person)
 
