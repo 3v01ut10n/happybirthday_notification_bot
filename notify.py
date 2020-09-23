@@ -26,6 +26,13 @@ def put_ending_for_age(age):
         return "лет"
 
 
+def get_message(when_birthday, name, gender, age, ending_for_age, telephone):
+    """Формирование сообщения для уведомления."""
+    return f"{when_birthday} день рождения отмечает {name}!\n"\
+           f"{gender} исполняется {age} {ending_for_age}.\n"\
+           f"Номер телефона: {telephone}"
+
+
 db.connection.ping()
 current_date = db.get_current_date()
 active_birthdays = db.select_active_birthdays()
@@ -41,9 +48,14 @@ for person in today_birthday_boys:
     current_age = current_date.year - person['date'].year
     db.bot.send_message(
         group_id,
-        f"Сегодня день рождения отмечает {person['name']}!\n"
-        f"{put_gender(person['gender'])} исполняется {current_age} {put_ending_for_age(current_age)}.\n"
-        f"Номер телефона: {person['telephone']}"
+        get_message(
+            when_birthday="Сегодня",
+            name=person['name'],
+            gender=put_gender(person['gender']),
+            age=current_age,
+            ending_for_age=put_ending_for_age(current_age),
+            telephone=person['telephone']
+        )
     )
 
 
@@ -60,7 +72,12 @@ for person in week_birthday_boys:
     current_age = current_date.year - person['date'].year
     db.bot.send_message(
         group_id,
-        f"Через неделю день рождения у {person['name']}!\n"
-        f"{put_gender(person['gender'])} исполняется {current_age} {put_ending_for_age(current_age)}.\n"
-        f"Номер телефона: {person['telephone']}"
+        get_message(
+            when_birthday="Через неделю",
+            name=person['name'],
+            gender=put_gender(person['gender']),
+            age=current_age,
+            ending_for_age=put_ending_for_age(current_age),
+            telephone=person['telephone']
+        )
     )
