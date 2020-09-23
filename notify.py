@@ -20,8 +20,6 @@ def put_ending_for_age(age):
         return "лет"
     elif (age % 10 == 2) or (age % 10 == 3) or (age % 10 == 4):
         return "года"
-    elif (25 <= age <= 30) or (35 <= age <= 40):
-        return "лет"
     elif (age % 10 == 5) or (age % 10 == 6) or (age % 10 == 7) or (age % 10 == 8) or (age % 10 == 9) or (age % 10 == 0):
         return "лет"
 
