@@ -22,8 +22,7 @@ def insert_birthday(name, date, telephone, gender):
         cursor.execute(sql)
         connection.commit()
     except Exception as e:
-        print(e)
-        bot.send_message(adm_id, "При добавлении произошла ошибка")
+        bot.send_message(adm_id, f"При выполнении insert_birthday произошла ошибка: {e}")
 
 
 def select_all_birthdays():
@@ -39,8 +38,7 @@ def select_all_birthdays():
             data += f"{birthday['name']} - {date_convert_from_mysql_format(birthday['date'])}\n"
         return data
     except Exception as e:
-        print(e)
-        bot.send_message(adm_id, "При получении списка возникла ошибка")
+        bot.send_message(adm_id, f"При выполнении select_all_birthdays возникла ошибка: {e}")
 
 
 def select_birthday(active):
@@ -60,8 +58,7 @@ def select_birthday(active):
                 data += f"{birthday['id']}. {birthday['name']} - {date_convert_from_mysql_format(birthday['date'])}\n"
             return data
         except Exception as e:
-            print(e)
-            bot.send_message(adm_id, "При получении списка возникла ошибка")
+            bot.send_message(adm_id, f"При выполнении select_birthday(if active) возникла ошибка: {e}")
     else:
         try:
             data = ""
@@ -73,8 +70,7 @@ def select_birthday(active):
                 data += f"{birthday['id']}. {birthday['name']} - {date_convert_from_mysql_format(birthday['date'])}\n"
             return data
         except Exception as e:
-            print(e)
-            bot.send_message(adm_id, "При получении списка возникла ошибка")
+            bot.send_message(adm_id, f"При выполнении select_birthday(else) возникла ошибка: {e}")
 
 
 def select_active_birthdays():
@@ -88,7 +84,7 @@ def select_active_birthdays():
         return birthdays
     except Exception as e:
         print(e)
-        bot.send_message(adm_id, "При получении списка возникла ошибка")
+        bot.send_message(adm_id, f"При выполнении select_active_birthdays возникла ошибка: {e}")
 
 
 def manage_notify_birthday(id, mode):
@@ -103,8 +99,7 @@ def manage_notify_birthday(id, mode):
             sql = f"UPDATE `happy_birthdays` SET active = '0' WHERE id = '{id}';"
             cursor.execute(sql)
         except Exception as e:
-            print(e)
-            bot.send_message(adm_id, "При отключении возникла ошибка")
+            bot.send_message(adm_id, f"При выполнении manage_notify_birthday(disable) возникла ошибка: {e}")
     elif mode == "enable":
         try:
             cursor = connection.cursor()
@@ -112,7 +107,7 @@ def manage_notify_birthday(id, mode):
             cursor.execute(sql)
         except Exception as e:
             print(e)
-            bot.send_message(adm_id, "При включении возникла ошибка")
+            bot.send_message(adm_id, f"При выполнении manage_notify_birthday(enable) возникла ошибка: {e}")
 
 
 def get_current_date():
@@ -125,4 +120,4 @@ def get_current_date():
         return cursor.fetchone()["CURRENT_DATE"]
     except Exception as e:
         print(e)
-        bot.send_message(adm_id, "При получении системной даты возникла ошибка")
+        bot.send_message(adm_id, f"При выполнении get_current_date возникла ошибка: {e}")

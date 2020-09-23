@@ -32,7 +32,7 @@ def admin_menu(message):
         if check_admin_rights(message):
             bot.send_message(adm_id, admin_menu_keyboard())
     except Exception as e:
-        print(e)
+        bot.send_message(adm_id, f"При выполнении check_admin_rights возникла ошибка: {e}")
 
 
 @bot.message_handler(commands=["add_birthday"])
@@ -47,7 +47,7 @@ def add_birthday(message):
                 parse_mode="Markdown")
             bot.register_next_step_handler(message, add_message_processing)
     except Exception as e:
-        print(e)
+        bot.send_message(adm_id, f"При выполнении add_birthday возникла ошибка: {e}")
 
 
 def add_message_processing(message):
@@ -73,7 +73,7 @@ def disable_birthday(message):
             else:
                 bot.send_message(adm_id, "Сейчас уведомления отключены для всех")
     except Exception as e:
-        print(e)
+        bot.send_message(adm_id, f"При выполнении disable_birthday возникла ошибка: {e}")
 
 
 def disable_message_processing(message):
@@ -98,7 +98,7 @@ def enable_birthday(message):
             else:
                 bot.send_message(adm_id, "Сейчас уведомления включены для всех")
     except Exception as e:
-        print(e)
+        bot.send_message(adm_id, f"При выполнении enable_birthday возникла ошибка: {e}")
 
 
 def enable_message_processing(message):
@@ -118,7 +118,7 @@ def show_all_birthdays(message):
         if check_admin_rights(message):
             bot.send_message(adm_id, db.select_all_birthdays())
     except Exception as e:
-        print(e)
+        bot.send_message(adm_id, f"При выполнении show_all_birthdays возникла ошибка: {e}")
 
 
 if __name__ == "__main__":
