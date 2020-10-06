@@ -1,7 +1,7 @@
 from datetime import date
 
 from database import db
-from config import group_id
+from config import group_id, adm_id
 
 
 def put_gender(gender):
@@ -20,7 +20,7 @@ def put_ending_for_age(age):
         return "лет"
     elif (age % 10 == 2) or (age % 10 == 3) or (age % 10 == 4):
         return "года"
-    elif (age % 10 == 5) or (age % 10 == 6) or (age % 10 == 7) or (age % 10 == 8) or (age % 10 == 9) or (age % 10 == 0):
+    else:
         return "лет"
 
 
@@ -44,17 +44,20 @@ for person in active_birthdays:
 # Если именинник есть, проведётся отправка.
 for person in today_birthday_boys:
     current_age = current_date.year - person['date'].year
-    db.bot.send_message(
-        group_id,
-        get_message(
-            when_birthday="Сегодня",
-            name=person['name'],
-            gender=put_gender(person['gender']),
-            age=current_age,
-            ending_for_age=put_ending_for_age(current_age),
-            telephone=person['telephone']
+    try:
+        db.bot.send_message(
+            group_id,
+            get_message(
+                when_birthday="Сегодня",
+                name=person['name'],
+                gender=put_gender(person['gender']),
+                age=current_age,
+                ending_for_age=put_ending_for_age(current_age),
+                telephone=person['telephone']
+            )
         )
-    )
+    except Exception as e:
+        db.bot.send_message(adm_id, f"При отправке уведомления cron по 'Сегодня' возникла ошибка: {e}")
 
 
 # Поиск именинников за неделю.
@@ -68,14 +71,17 @@ for person in active_birthdays:
 # Если именинник есть, проведётся отправка.
 for person in week_birthday_boys:
     current_age = current_date.year - person['date'].year
-    db.bot.send_message(
-        group_id,
-        get_message(
-            when_birthday="Через неделю",
-            name=person['name'],
-            gender=put_gender(person['gender']),
-            age=current_age,
-            ending_for_age=put_ending_for_age(current_age),
-            telephone=person['telephone']
+    try:
+        db.bot.send_message(
+            group_id,
+            get_message(
+                when_birthday="Через неделю",
+                name=person['name'],
+                gender=put_gender(person['gender']),
+                age=current_age,
+                ending_for_age=put_ending_for_age(current_age),
+                telephone=person['telephone']
+            )
         )
-    )
+    except Exception as e:
+        db.bot.send_message(adm_id, f"При отправке уведомления cron по 'Неделя' возникла ошибка: {e}")
